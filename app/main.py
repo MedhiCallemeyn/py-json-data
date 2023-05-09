@@ -37,8 +37,8 @@ for user in read_file["users"] :
 strawberry_fan = 0
 
 for user in read_file["users"] : 
-      if 'strawberry':
-          strawberry_fan +=1
+    if 'strawberry':
+        strawberry_fan +=1
 
 print(f"nombre d’utilisateurs dont le fruit favoris est la fraise : {strawberry_fan}")
 
@@ -77,30 +77,76 @@ total = 0.0
 
 for user in read_file["users"] :
     for key,value in user.items():
-      if key == 'balance':
-        value_without_dollars = value.replace('$',"")
-        new_value = value_without_dollars.replace(',','.')
-        final_value = new_value.replace(".","",1)
-        float_value = float(final_value)
-        total += float_value
+        if key == 'balance':
+            value_without_dollars = value.replace('$',"")
+            new_value = value_without_dollars.replace(',','.')
+            final_value = new_value.replace(".","",1)
+            float_value = float(final_value)
+            total += float_value
         
 print(f"la somme des soldes de tous les utilisateurs : {total}")
 # 11. Afficher dans la console la ville où réside Zelma Sutton.
 list_adress =""
 for user in read_file["users"] :
-  if user['name'] == 'Zelma Sutton':
-      list_adress= user['address'] 
-      print(f"la ville où réside Zelma Sutton : {list_adress.split(',')[1]}")
+    if user['name'] == 'Zelma Sutton':
+        list_adress= user['address'] 
+        print(f"la ville où réside Zelma Sutton : {list_adress.split(',')[1]}")
 
 
 
 # II. ÉCRIRE DES DONNÉES
 
 # 1. Supprimer le second utilisateur.
+
+del read_file["users"][1]
+with open('deleted_user.json', 'w') as f:
+    json.dump(read_file, f)
+
+
 # 2. Ajouter un ami au troisième utilisateur.
+
+
+new_friend  = { "id":3,"name":"John Doe"}
+read_file["users"][2]["friends"].append(new_friend)
+with open('add_friend.json', 'w') as f:
+    json.dump(read_file, f)
+
 # 3. Mettre à jour le numéro de téléphone du quatrième utilisateur par “+1(954) 421-6824”.
+
+for user in read_file['users'] :
+    if user['index'] == 3:
+        user['phone'] = '+1(954) 421-6824'
+with open('phone_change.json', 'w') as f:
+    json.dump(read_file, f)
+
+
 # 4. Ajouter une deuxième entreprise du nom de “SYLENT“ au premier utilisateur.
+for user in read_file['users'] :
+    if user['index'] == 0:
+        user.update({"company": ["IMAGEFLOW","SYLENT"]})
+with open('company_update.json', 'w') as f:
+    json.dump(read_file, f)
 # 5. Séparer pour chacun des utilisateurs le nom et le prénom, à l’aide des clefs suivantes
 # firstName et lastName.
+for user in read_file['users'] :
+    name = user['name'].split(' ')
+    del user['name']
+    user['firstName'] = name[0]
+    user['lastName'] = name[1]
+with open('name_update.json', 'w') as f:
+    json.dump(read_file, f)
+
 # 6. Supprimer le tag “laborum“ du dernier utilisateur.
+for user in read_file['users'] :
+    if user['index'] == len(read_file['users'] ):
+        user['tags'].remove('laborum')
+    print(user['tags'])
+
+
 # 7. Ajouter “+1“ à l’âge de tous les utilisateurs.
+for user in read_file['users'] :
+    print("avant modification : ")
+    print(user['age'])
+    user['age'] += 1
+    print("apres modification : ")
+    print(user['age'])
