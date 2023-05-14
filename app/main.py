@@ -72,18 +72,13 @@ for i in (female_age):
 print(f"la moyenne d’âge des utilisateurs féminins : {round(result/len(female_age))} ans")
 
 # 10. Calculer et afficher la somme des soldes de tous les utilisateurs.
-total = 0.0
+def parse_balance(balance : str) -> float:
+    return float(balance.replace("$","").replace(",",""))
 
+balance_list = []
 for user in read_file["users"] :
-    if 'balance' in user.key():
-        value_without_dollars = user['balance'].replace('$',"").replace(",","")
-        new_value = value_without_dollars.replace(',','.')
-        final_value = new_value.replace(".","",1)
-        float_value = float(final_value)
-        total += float_value
-        
-print(f"la somme des soldes de tous les utilisateurs : ${total}")
-
+    balance_list.append(parse_balance(user['balance']))
+print(f"${sum(balance_list)}")
 
 # 11. Afficher dans la console la ville où réside Zelma Sutton.
 city_zelma =""
@@ -144,3 +139,9 @@ for user in read_file['users'] :
     user['age'] += 1
     print("apres modification : ")
     print(user['age'])
+
+
+
+
+with open('./output.json','w') as f:
+    json.dump(read_file,f,indent = 4)
