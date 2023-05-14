@@ -16,7 +16,7 @@ print(f"la compagnie du 2eme utilisateur : {read_file['users'][1]['company']}")
 
 # 3. Afficher dans la console le nom complet du troisième ami du second utilisateur.
 
-print(f"nom complet du troisième ami du second utilisateur : {read_file['users'][1]['friends'][1]['name']}")
+print(f"nom complet du troisième ami du second utilisateur : {read_file['users'][1]['friends'][2]['name']}")
 
 # 4. Afficher dans la console la couleur des yeux du premier utilisateur.
 
@@ -31,13 +31,12 @@ for user in read_file["users"] :
             print(f"adresse de {user['name']} : {value}")
 
 
-
 # 6. Afficher dans la console le nombre d’utilisateurs dont le fruit favoris est la fraise.
 
 strawberry_fan = 0
 
 for user in read_file["users"] : 
-    if 'strawberry':
+    if user['favoriteFruit'] =='strawberry':
         strawberry_fan +=1
 
 print(f"nombre d’utilisateurs dont le fruit favoris est la fraise : {strawberry_fan}")
@@ -65,7 +64,7 @@ female_age = []
 for user in read_file["users"] :
     if user['gender'] == 'female':
         female_age.append(user['age'])
-print(female_age)
+
 
 result = 0
 for i in (female_age):
@@ -76,21 +75,22 @@ print(f"la moyenne d’âge des utilisateurs féminins : {round(result/len(femal
 total = 0.0
 
 for user in read_file["users"] :
-    for key,value in user.items():
-        if key == 'balance':
-            value_without_dollars = value.replace('$',"")
-            new_value = value_without_dollars.replace(',','.')
-            final_value = new_value.replace(".","",1)
-            float_value = float(final_value)
-            total += float_value
+    if 'balance' in user.key():
+        value_without_dollars = user['balance'].replace('$',"").replace(",","")
+        new_value = value_without_dollars.replace(',','.')
+        final_value = new_value.replace(".","",1)
+        float_value = float(final_value)
+        total += float_value
         
-print(f"la somme des soldes de tous les utilisateurs : {total}")
+print(f"la somme des soldes de tous les utilisateurs : ${total}")
+
+
 # 11. Afficher dans la console la ville où réside Zelma Sutton.
-list_adress =""
+city_zelma =""
 for user in read_file["users"] :
     if user['name'] == 'Zelma Sutton':
-        list_adress= user['address'] 
-        print(f"la ville où réside Zelma Sutton : {list_adress.split(',')[1]}")
+        city_zelma= user['address'] 
+        print(f"la ville où réside Zelma Sutton : {city_zelma.split(',')[1]}")
 
 
 
@@ -99,8 +99,6 @@ for user in read_file["users"] :
 # 1. Supprimer le second utilisateur.
 
 del read_file["users"][1]
-with open('deleted_user.json', 'w') as f:
-    json.dump(read_file, f)
 
 
 # 2. Ajouter un ami au troisième utilisateur.
@@ -108,24 +106,21 @@ with open('deleted_user.json', 'w') as f:
 
 new_friend  = { "id":3,"name":"John Doe"}
 read_file["users"][2]["friends"].append(new_friend)
-with open('add_friend.json', 'w') as f:
-    json.dump(read_file, f)
+
 
 # 3. Mettre à jour le numéro de téléphone du quatrième utilisateur par “+1(954) 421-6824”.
 
 for user in read_file['users'] :
     if user['index'] == 3:
         user['phone'] = '+1(954) 421-6824'
-with open('phone_change.json', 'w') as f:
-    json.dump(read_file, f)
+
 
 
 # 4. Ajouter une deuxième entreprise du nom de “SYLENT“ au premier utilisateur.
 for user in read_file['users'] :
     if user['index'] == 0:
         user.update({"company": ["IMAGEFLOW","SYLENT"]})
-with open('company_update.json', 'w') as f:
-    json.dump(read_file, f)
+
 # 5. Séparer pour chacun des utilisateurs le nom et le prénom, à l’aide des clefs suivantes
 # firstName et lastName.
 for user in read_file['users'] :
@@ -133,8 +128,7 @@ for user in read_file['users'] :
     del user['name']
     user['firstName'] = name[0]
     user['lastName'] = name[1]
-with open('name_update.json', 'w') as f:
-    json.dump(read_file, f)
+
 
 # 6. Supprimer le tag “laborum“ du dernier utilisateur.
 for user in read_file['users'] :
